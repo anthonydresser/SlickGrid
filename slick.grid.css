@@ -32,8 +32,10 @@ classes should alter those!
   border-right: 1px solid silver;
   border-left: 0px !important;
   border-top: 0px !important;
-  border-bottom: 0px !important;
+  border-bottom: 2px solid #bbb;
   float: left;
+  background-color: #eee;
+  box-sizing: content-box;
 }
 
 .slick-headerrow-column.ui-state-default, .slick-footerrow-column.ui-state-default {
@@ -141,6 +143,14 @@ classes should alter those!
   outline: none;
 }
 
+.slick-cell > .row-number {
+  color: var(--color-content);
+  font-style: italic;
+  font-weight: lighter;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .slick-reorder-proxy {
   display: inline-block;
   background: blue;
@@ -161,4 +171,20 @@ classes should alter those!
   z-index: 10;
   position: absolute;
   border: 2px dashed black;
+}
+
+.slick-column-icon {
+  margin-right: 0.5em;
+  width: 1em;
+}
+
+.slick-header-column.ui-state-default.slick-header-with-icon {
+  display: flex;
+}
+
+.slick-header-with-icon .slick-column-name {
+  width: calc(100% - 1em);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
