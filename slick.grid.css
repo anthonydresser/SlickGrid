@@ -32,10 +32,8 @@ classes should alter those!
   border-right: 1px solid silver;
   border-left: 0px !important;
   border-top: 0px !important;
-  border-bottom: 2px solid #bbb;
+  border-bottom: 0x !important;
   float: left;
-  background-color: #eee;
-  box-sizing: content-box;
 }
 
 .slick-headerrow-column.ui-state-default, .slick-footerrow-column.ui-state-default {
@@ -171,8 +169,4 @@ classes should alter those!
   z-index: 10;
   position: absolute;
   border: 2px dashed black;
-}
-
-.slick-header-column.ui-state-default.slick-header-with-icon {
-  display: flex;
 }
