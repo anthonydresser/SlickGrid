@@ -173,18 +173,6 @@ classes should alter those!
   border: 2px dashed black;
 }
 
-.slick-column-icon {
-  margin-right: 0.5em;
-  width: 1em;
-}
-
 .slick-header-column.ui-state-default.slick-header-with-icon {
   display: flex;
-}
-
-.slick-header-with-icon .slick-column-name {
-  width: calc(100% - 1em);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }

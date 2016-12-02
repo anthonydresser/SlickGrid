@@ -95,7 +95,6 @@ if (typeof Slick === "undefined") {
       renderRowWithRange: false,
       showRowNumber: false,
       rowNumberFontWidth: 8,
-      showDataTypeIcon: false,
       showHeader: true,
       preserveCopiedSelectionOnPaste: false
     };
@@ -694,11 +693,6 @@ if (typeof Slick === "undefined") {
             .data("column", m)
             .addClass(m.headerCssClass || "")
             .appendTo($headers);
-
-        if (options.showDataTypeIcon === true && m.icon !== undefined) {
-          header.prepend("<img class='slick-column-icon' src='" + m.icon + "' />");
-          header.addClass("slick-header-with-icon")
-        }
 
         if (options.enableColumnReorder || m.sortable) {
           header
