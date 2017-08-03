@@ -4021,7 +4021,7 @@ if (typeof Slick === "undefined") {
       "removeCellCssStyles": removeCellCssStyles,
       "getCellCssStyles": getCellCssStyles,
       "getScrollbarDimensions": function() { return scrollbarDimensions; },
-      "getColumnWidths": function() { return columns.map(c => c.width); },
+      "getColumnWidths": function() { return columns.map(function(c) { return c.width; }); },
 
       "init": finishInitialization,
       "destroy": destroy,
