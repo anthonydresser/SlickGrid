@@ -1165,8 +1165,8 @@ if (typeof Slick === "undefined") {
       ];
 
       for (var i = 0; i < columns.length; i++) {
-        rules["." + uid + " .l" + i] = " { }";
-        rules["." + uid + " .r" + i] = " { }";
+        rules.push("." + uid + " .l" + i + " { }");
+        rules.push("." + uid + " .r" + i + " { }");
       }
 
       if ($style[0].styleSheet) { // IE
