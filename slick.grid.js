@@ -1072,22 +1072,17 @@ if (typeof Slick === "undefined") {
     function createCssRules() {
       $style = $("<style type='text/css' rel='stylesheet' />").appendTo($("head"));
       var rowHeight = (options.rowHeight - cellHeightDiff);
-      var styles = {};
-      styles["." + uid + " .slick-header-column"] = "{ left: 1000px; }",
-      styles["." + uid + " .slick-top-panel"] = "{ height:" + options.topPanelHeight + "px; }",
-      styles["." + uid + " .slick-headerrow-columns"] = "{ height:" + options.headerRowHeight + "px; }",
-      styles["." + uid + " .slick-cell"] = "{ height:" + rowHeight + "px; }",
-      styles["." + uid + " .slick-row"] = "{ height:" + options.rowHeight + "px; }"
+      var rules = [
+        "." + uid + " .slick-header-column, ::shadow ." + uid + " .slick-header-column { left: 1000px; }",
+        "." + uid + " .slick-top-panel ::shadow, ." + uid + " .slick-top-panel { height:" + options.topPanelHeight + "px; }",
+        "." + uid + " .slick-headerrow-columns, ::shadow ." + uid + " .slick-headerrow-columns { height:" + options.headerRowHeight + "px; }",
+        "." + uid + " .slick-cell, ::shadow ." + uid + " .slick-cell { height:" + rowHeight + "px; }",
+        "." + uid + " .slick-row, ::shadow ." + uid + " .slick-row { height:" + options.rowHeight + "px; }"
+      ];
 
       for (var i = 0; i < columns.length; i++) {
-        styles["." + uid + " .l" + i] = " { }";
-        styles["." + uid + " .r" + i] = " { }";
-      }
-
-      // make style rules apply to both light and shadow DOM
-      var rules = [];
-      for (var selector in styles) {
-        rules.push(selector + ", " + "::shadow " + selector + " " + styles[selector]);
+        rules.push("." + uid + " .l" + i + " { }");
+        rules.push("." + uid + " .r" + i + " { }");
       }
 
       if ($style[0].styleSheet) { // IE
