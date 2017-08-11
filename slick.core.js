@@ -40,7 +40,8 @@
         RIGHT: 39,
         TAB: 9,
         UP: 38
-      }
+      },
+      "preClickClassName" : "slick-edit-preclick"
     }
   });
 
@@ -323,6 +324,13 @@
      * @type {Boolean}
      */
     this.collapsed = false;
+
+    /***
+     * Whether a group selection checkbox is checked.
+     * @property selectChecked
+     * @type {Boolean}
+     */
+    this.selectChecked = false;
 
     /***
      * GroupTotals, if any.
