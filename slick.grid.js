@@ -1165,14 +1165,8 @@ if (typeof Slick === "undefined") {
       ];
 
       for (var i = 0; i < columns.length; i++) {
-        styles["." + uid + " .l" + i] = " { }";
-        styles["." + uid + " .r" + i] = " { }";
-      }
-
-      // make style rules apply to both light and shadow DOM
-      var rules = [];
-      for (var selector in styles) {
-        rules.push(selector + ", " + "::shadow " + selector + " " + styles[selector]);
+        rules["." + uid + " .l" + i] = " { }";
+        rules["." + uid + " .r" + i] = " { }";
       }
 
       if ($style[0].styleSheet) { // IE
