@@ -3947,7 +3947,7 @@ if (typeof Slick === "undefined") {
       if (!selectionModel) {
         throw new Error("Selection model is not set");
       }
-      return selectedRows;
+      return selectionModel.getSelectedRows();
     }
 
     function setSelectedRows(rows) {
