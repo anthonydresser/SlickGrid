@@ -1449,6 +1449,8 @@ if (typeof Slick === "undefined") {
 
      if (minRow !== undefined && maxRow !== undefined) {
         fillSelectedRows(minRow, maxRow);
+      } else {
+        selectedRows = [];
       }
 
       setCellCssStyles(selectedCellCssClass, hash);
