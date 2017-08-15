@@ -1418,10 +1418,10 @@ if (typeof Slick === "undefined") {
     }
 
     function handleSelectedRangesChanged(e, ranges) {
-      var minRow, maxRow;
       var hash = [];
       var cellOffset = options.showRowNumber === true ? 1 : 0;
       var selectedCellCssClass = options.selectedCellCssClass;
+      selectedRows = [];
 
       for (var i = 0; i < ranges.length; i++) {
         var range = ranges[i];
@@ -1430,6 +1430,10 @@ if (typeof Slick === "undefined") {
           range.fromCell < 0 || range.toCell >= columns.length) {
           continue;
         }
+        for (var j = ranges[i].fromRow; j <= ranges[i].toRow; j++) {
+          selectedRows.push(j);
+        }
+        
         hash.push({
           fromRow: range.fromRow,
           toRow: range.toRow,
@@ -1437,36 +1441,11 @@ if (typeof Slick === "undefined") {
           toCell: range.toCell + cellOffset,
           value: selectedCellCssClass
         });
-
-        if (minRow === undefined || range.fromRow < minRow) {
-          minRow = range.fromRow;
-        }
-
-        if (maxRow === undefined || range.toRow > maxRow) {
-          maxRow = range.toRow;
-        }
-      }
-
-     if (minRow !== undefined && maxRow !== undefined) {
-        fillSelectedRows(minRow, maxRow);
-      } else {
-        selectedRows = [];
       }
 
       setCellCssStyles(selectedCellCssClass, hash);
 
       trigger(self.onSelectedRowsChanged, {rows: getSelectedRows(), grid: self}, e);
-    }
-
-    function fillSelectedRows(start, end) {
-      if (start <= 0 && end >= getDataLength() - 1) {
-        selectedRows = fullRowSelection;
-      } else {
-        selectedRows = [];
-        for (var i = start; i <= end; i++) {
-          selectedRows.push(i);
-        }
-      }
     }
 
     function getColumns() {
