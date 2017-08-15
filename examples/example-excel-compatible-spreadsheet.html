@@ -2,6 +2,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
   <title>SlickGrid example 3: Editing</title>
   <link rel="stylesheet" href="../slick.grid.css" type="text/css"/>
   <link rel="stylesheet" href="../css/smoothness/jquery-ui-1.11.3.custom.css" type="text/css"/>
@@ -87,8 +88,6 @@
     autoEdit: false
   };
 
-
-
   var undoRedoBuffer = {
       commandQueue : [],
       commandCtr : 0,
@@ -100,8 +99,7 @@
       },
 
       undo : function() {
-        if (this.commandCtr == 0)
-          return;
+        if (this.commandCtr == 0) { return; }
 
         this.commandCtr--;
         var command = this.commandQueue[this.commandCtr];
@@ -111,8 +109,7 @@
         }
       },
       redo : function() {
-        if (this.commandCtr >= this.commandQueue.length)
-          return;
+        if (this.commandCtr >= this.commandQueue.length) { return; }
         var command = this.commandQueue[this.commandCtr];
         this.commandCtr++;
         if (command && Slick.GlobalEditorLock.cancelCurrentEdit()) {
@@ -137,21 +134,15 @@
 
   var pluginOptions = {
     clipboardCommandHandler: function(editCommand){ undoRedoBuffer.queueAndExecuteCommand.call(undoRedoBuffer,editCommand); },
+    readOnlyMode : false,
     includeHeaderWhenCopying : false,
     newRowCreator: function(count) {
-
       for (var i = 0; i < count; i++) {
-
         var item = {
-
           id: "newRow_" + newRowIds++
-
         }
-
         grid.getData().addItem(item);
-
       }
-
     }
   };
 
@@ -198,7 +189,6 @@
     grid.getCanvasNode().focus();
 
     grid.registerPlugin(new Slick.CellExternalCopyManager(pluginOptions));
-    
 
     grid.onAddNewRow.subscribe(function (e, args) {
       var item = args.item;
