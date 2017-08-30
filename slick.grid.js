@@ -1991,7 +1991,7 @@ if (typeof Slick === "undefined") {
 
       var m = columns[cell], d = getDataItem(row);
       if (currentEditor && activeRow === row && activeCell === cell) {
-        currentEditor.loadValue(d);
+        currentEditor.loadValue(d, activeRow);
       } else {
         var formatterResult =  d ? getFormatter(row, m)(row, cell, getDataItemValueForColumn(d, m), m, d) : "";
         applyFormatResultToCellNode(formatterResult, cellNode);
@@ -2019,7 +2019,7 @@ if (typeof Slick === "undefined") {
             node = cacheEntry.cellNodesByColumnIdx[columnIdx];
 
         if (row === activeRow && columnIdx === activeCell && currentEditor) {
-          currentEditor.loadValue(d);
+          currentEditor.loadValue(d, activeRow);
         } else if (d) {
           formatterResult =  getFormatter(row, m)(row, columnIdx, getDataItemValueForColumn(d, m), m, d);
           applyFormatResultToCellNode(formatterResult, node);
@@ -3278,7 +3278,7 @@ if (typeof Slick === "undefined") {
       });
 
       if (item) {
-        currentEditor.loadValue(item);
+        currentEditor.loadValue(item, activeRow);
         if (preClickModeOn && currentEditor.preClick) {
           currentEditor.preClick();
         }
