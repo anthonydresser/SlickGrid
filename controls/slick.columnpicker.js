@@ -1,10 +1,42 @@
+  /***
+   * A control to add a Column Picker (right+click on any column header to reveal the column picker)
+   *
+   * USAGE:
+   *
+   * Add the slick.columnpicker.(js|css) files and register it with the grid.
+   *
+   * Available options, by defining a columnPicker object:
+   *
+   *  var options = {
+   *    enableCellNavigation: true,
+   *    columnPicker: {
+   *      columnTitle: "Columns",                 // default to empty string
+   *
+   *      // the last 2 checkboxes titles
+   *      forceFitTitle: "Force fit columns",     // default to "Force fit columns"
+   *      syncResizeTitle: "Synchronous resize",  // default to "Synchronous resize"
+   *    }
+   *  };
+   *
+   * @class Slick.Controls.ColumnPicker
+   * @constructor
+   */
+
+'use strict';
+
 (function ($) {
   function SlickColumnPicker(columns, grid, options) {
+    var $list;
     var $menu;
     var columnCheckboxes;
+    var onColumnsChanged = new Slick.Event();
 
     var defaults = {
-      fadeSpeed:250
+      fadeSpeed: 250,
+
+      // the last 2 checkboxes titles
+      forceFitTitle: "Force fit columns",
+      syncResizeTitle: "Synchronous resize"
     };
 
     function init() {
@@ -12,30 +44,49 @@
       grid.onColumnsReordered.subscribe(updateColumnOrder);
       options = $.extend({}, defaults, options);
 
-      $menu = $("<span class='slick-columnpicker' style='display:none;position:absolute;z-index:20;overflow-y:scroll;' />").appendTo(document.body);
+      $menu = $("<div class='slick-columnpicker' style='display:none' />").appendTo(document.body);
+      var $close = $("<button type='button' class='close' data-dismiss='slick-columnpicker' aria-label='Close'><span class='close' aria-hidden='true'>&times;</span></button>").appendTo($menu);
 
-      $menu.on("mouseleave", function (e) {
-        $(this).fadeOut(options.fadeSpeed)
-      });
+      // user could pass a title on top of the columns list
+      if(options.columnPickerTitle || (options.columnPicker && options.columnPicker.columnTitle)) {
+        var columnTitle = options.columnPickerTitle || options.columnPicker.columnTitle;
+        var $title = $("<div class='title'/>").append(columnTitle);
+        $title.appendTo($menu);
+      }
+
       $menu.on("click", updateColumn);
+      $list = $("<span class='slick-columnpicker-list' />");
 
+      // Hide the menu on outside click.
+      $(document.body).on("mousedown", handleBodyMouseDown);
+
+      // destroy the picker if user leaves the page
+      $(window).on("beforeunload", destroy);
     }
 
     function destroy() {
       grid.onHeaderContextMenu.unsubscribe(handleHeaderContextMenu);
       grid.onColumnsReordered.unsubscribe(updateColumnOrder);
+      $(document.body).off("mousedown", handleBodyMouseDown);
+      $("div.slick-columnpicker").hide(options.fadeSpeed);
       $menu.remove();
+    }
+
+    function handleBodyMouseDown(e) {
+      if (($menu && $menu[0] != e.target && !$.contains($menu[0], e.target)) || e.target.className == "close") {
+        $menu.hide(options.fadeSpeed);
+      }
     }
 
     function handleHeaderContextMenu(e, args) {
       e.preventDefault();
-      $menu.empty();
+      $list.empty();
       updateColumnOrder();
       columnCheckboxes = [];
 
       var $li, $input;
       for (var i = 0; i < columns.length; i++) {
-        $li = $("<li />").appendTo($menu);
+        $li = $("<li />").appendTo($list);
         $input = $("<input type='checkbox' />").data("column-id", columns[i].id);
         columnCheckboxes.push($input);
 
@@ -49,21 +100,23 @@
             .appendTo($li);
       }
 
-      $("<hr/>").appendTo($menu);
-      $li = $("<li />").appendTo($menu);
+      var forceFitTitle = (options.columnPicker && options.columnPicker.forceFitTitle) || defaults.forceFitTitle;
+      $("<hr/>").appendTo($list);
+      $li = $("<li />").appendTo($list);
       $input = $("<input type='checkbox' />").data("option", "autoresize");
       $("<label />")
-          .text("Force fit columns")
+          .text(forceFitTitle)
           .prepend($input)
           .appendTo($li);
       if (grid.getOptions().forceFitColumns) {
         $input.attr("checked", "checked");
       }
 
-      $li = $("<li />").appendTo($menu);
+      var syncResizeTitle = (options.columnPicker && options.columnPicker.syncResizeTitle) || defaults.syncResizeTitle;
+      $li = $("<li />").appendTo($list);
       $input = $("<input type='checkbox' />").data("option", "syncresize");
       $("<label />")
-          .text("Synchronous resize")
+          .text(syncResizeTitle)
           .prepend($input)
           .appendTo($li);
       if (grid.getOptions().syncColumnCellResize) {
@@ -75,6 +128,8 @@
           .css("left", e.pageX - 10)
           .css("max-height", $(window).height() - e.pageY -10)
           .fadeIn(options.fadeSpeed);
+
+      $list.appendTo($menu);
     }
 
     function updateColumnOrder() {
@@ -133,6 +188,7 @@
         }
 
         grid.setColumns(visibleColumns);
+        onColumnsChanged.notify({columns: visibleColumns, grid: grid});
       }
     }
 
@@ -144,7 +200,8 @@
 
     return {
       "getAllColumns": getAllColumns,
-      "destroy": destroy
+      "destroy": destroy,
+      "onColumnsChanged": onColumnsChanged
     };
   }
 
