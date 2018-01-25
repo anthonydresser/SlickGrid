@@ -507,14 +507,24 @@ if (typeof Slick === "undefined") {
     }
 
     function measureScrollbar() {
-      var $outerdiv = $('<div class="' + $('.slick-viewport')[0].className + '" style="position:absolute; top:-10000px; left:-10000px; overflow:auto; width:100px; height:100px;"></div>').appendTo($('.slick-viewport'));
-      var $innerdiv = $('<div style="width:200px; height:200px; overflow:auto;"></div>').appendTo($outerdiv);
-      var dim = {
-	width: $outerdiv[0].offsetWidth - $outerdiv[0].clientWidth,
-	height: $outerdiv[0].offsetHeight - $outerdiv[0].clientHeight
-      };
-      $innerdiv.remove();
-      $outerdiv.remove();
+      var viewport = $('.slick-viewport')[0], dim;
+      if (viewport) {
+        var $outerdiv = $('<div class="' + viewport.className + '" style="position:absolute; top:-10000px; left:-10000px; overflow:auto; width:100px; height:100px;"></div>').appendTo($('.slick-viewport'));
+        var $innerdiv = $('<div style="width:200px; height:200px; overflow:auto;"></div>').appendTo($outerdiv);
+        var dim = {
+          width: $outerdiv[0].offsetWidth - $outerdiv[0].clientWidth,
+          height: $outerdiv[0].offsetHeight - $outerdiv[0].clientHeight
+        };
+        $innerdiv.remove();
+        $outerdiv.remove();
+      } else {
+        var $c = $("<div style='position:absolute; top:-10000px; left:-10000px; width:100px; height:100px; overflow:scroll;'></div>").appendTo("body");
+        var dim = {
+          width: $c.width() - $c[0].clientWidth,
+          height: $c.height() - $c[0].clientHeight
+        };
+        $c.remove();
+      }
       return dim;
     }
 
