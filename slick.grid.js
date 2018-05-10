@@ -286,7 +286,8 @@ if (typeof Slick === "undefined") {
           .css("overflow", "hidden")
           .css("outline", 0)
           .addClass(uid)
-          .addClass("ui-widget");
+          .addClass("ui-widget")
+          .attr('role', 'grid');
 
       // set up a positioning container if needed
       if (!/relative|absolute|fixed/.test($container.css("position"))) {
@@ -764,7 +765,7 @@ if (typeof Slick === "undefined") {
       for (var i = 0; i < columns.length; i++) {
         var m = columns[i];
 
-        var header = $("<div class='ui-state-default slick-header-column' />")
+        var header = $("<div role='columnheader' class='ui-state-default slick-header-column' />")
             .html("<span class='slick-column-name'>" + m.name + "</span>")
             .width(m.width - headerColumnWidthDiff)
             .attr("id", "" + uid + m.id)
@@ -1805,7 +1806,7 @@ if (typeof Slick === "undefined") {
         rowCss += " " + metadata.cssClasses;
       }
 
-      stringArray.push("<div class='ui-widget-content " + rowCss + "' style='top:" + getRowTop(row) + "px'>");
+      stringArray.push("<div role='row' class='ui-widget-content " + rowCss + "' style='top:" + getRowTop(row) + "px'>");
 
       var colspan, m;
       for (var i = 0, ii = columns.length; i < ii; i++) {
@@ -1869,7 +1870,7 @@ if (typeof Slick === "undefined") {
       var addlCssClasses = trigger(self.onBeforeAppendCell, { row: row, cell: cell, grid: self, value: value, dataContext: item }) || '';
       addlCssClasses += (formatterResult.addClasses ? (addlCssClasses ? ' ' : '') + formatterResult.addClasses : '');
       
-      stringArray.push("<div class='" + cellCss + (addlCssClasses ? ' ' + addlCssClasses : '') + "'>");
+      stringArray.push("<div role='gridcell' class='" + cellCss + (addlCssClasses ? ' ' + addlCssClasses : '') + "'>");
 
       // if there is a corresponding row (if not, this is the Add New row or this data hasn't been loaded yet)
       if (item) {
