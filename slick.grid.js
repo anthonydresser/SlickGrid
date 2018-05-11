@@ -149,7 +149,6 @@ if (typeof Slick === "undefined") {
     var $container;
     var uid = "slickgrid_" + Math.round(1000000 * Math.random());
     var self = this;
-    var $focusSink, $focusSink2;
     var $headerScroller;
     var $headers;
     var $headerRow, $headerRowScroller, $headerRowSpacer;
@@ -286,14 +285,13 @@ if (typeof Slick === "undefined") {
           .css("overflow", "hidden")
           .css("outline", 0)
           .addClass(uid)
+          .attr('role', 'grid')
           .addClass("ui-widget");
 
       // set up a positioning container if needed
       if (!/relative|absolute|fixed/.test($container.css("position"))) {
         $container.css("position", "relative");
       }
-
-      $focusSink = $("<div tabIndex='0' hideFocus style='position:fixed;width:0;height:0;top:0;left:0;outline:0;'></div>").appendTo($container);
 
       if (options.createPreHeaderPanel) {
         $preHeaderPanelScroller = $("<div class='slick-preheader-panel ui-state-default' style='overflow:hidden;position:relative;' />").appendTo($container);
@@ -307,7 +305,7 @@ if (typeof Slick === "undefined") {
       }
 
       $headerScroller = $("<div class='slick-header ui-state-default' />").appendTo($container);
-      $headers = $("<div class='slick-header-columns' style='left:-1000px' />").appendTo($headerScroller);
+      $headers = $("<div role='row' class='slick-header-columns' style='left:-1000px' />").appendTo($headerScroller);
 
       if (options.showHeader === false) {
           $headers.height(0);
@@ -356,8 +354,6 @@ if (typeof Slick === "undefined") {
       }
 
       if (options.numberedMultiColumnSort) { sortIndicatorCssClass = "slick-sort-indicator-numbered"; }
-
-      $focusSink2 = $focusSink.clone().appendTo($container);
 
       if (!options.explicitInitialization) {
         finishInitialization();
@@ -420,8 +416,6 @@ if (typeof Slick === "undefined") {
               .on("scroll", handlePreHeaderPanelScroll);
         }
 
-        $focusSink.add($focusSink2)
-            .on("keydown", handleKeyDown);
         $canvas
             .on("keydown", handleKeyDown)
             .on("click", handleClick)
@@ -765,7 +759,7 @@ if (typeof Slick === "undefined") {
         var m = columns[i];
 
         var header = $("<div class='ui-state-default slick-header-column' />")
-            .html("<span class='slick-column-name'>" + m.name + "</span>")
+            .html("<span role='columnheader' class='slick-column-name'>" + m.name + "</span>")
             .width(m.width - headerColumnWidthDiff)
             .attr("id", "" + uid + m.id)
             .attr("title", m.toolTip || "")
@@ -1805,7 +1799,7 @@ if (typeof Slick === "undefined") {
         rowCss += " " + metadata.cssClasses;
       }
 
-      stringArray.push("<div class='ui-widget-content " + rowCss + "' style='top:" + getRowTop(row) + "px'>");
+      stringArray.push("<div role='row' class='ui-widget-content " + rowCss + "' style='top:" + getRowTop(row) + "px'>");
 
       var colspan, m;
       for (var i = 0, ii = columns.length; i < ii; i++) {
@@ -1869,7 +1863,7 @@ if (typeof Slick === "undefined") {
       var addlCssClasses = trigger(self.onBeforeAppendCell, { row: row, cell: cell, grid: self, value: value, dataContext: item }) || '';
       addlCssClasses += (formatterResult.addClasses ? (addlCssClasses ? ' ' : '') + formatterResult.addClasses : '');
       
-      stringArray.push("<div class='" + cellCss + (addlCssClasses ? ' ' + addlCssClasses : '') + "'>");
+      stringArray.push("<div tabindex='-1' role='gridcell' class='" + cellCss + (addlCssClasses ? ' ' + addlCssClasses : '') + "'>");
 
       // if there is a corresponding row (if not, this is the Add New row or this data hasn't been loaded yet)
       if (item) {
@@ -3141,11 +3135,14 @@ if (typeof Slick === "undefined") {
     }
 
     function setFocus() {
-      if (tabbingDirection == -1) {
-        $focusSink[0].focus();
-      } else {
-        $focusSink2[0].focus();
+      if (activeCell && activeRow) {
+        getCellNode(activeRow, activeCell).focus();
       }
+      // if (tabbingDirection == -1) {
+      //   $focusSink[0].focus();
+      // } else {
+      //   $focusSink2[0].focus();
+      // }
     }
 
     function scrollCellIntoView(row, cell, doPaging) {
