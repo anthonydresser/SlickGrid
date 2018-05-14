@@ -1734,8 +1734,7 @@ if (typeof Slick === "undefined") {
 
     function defaultFormatter(row, cell, value, columnDef, dataContext, grid) {
       if (options.showRowNumber === true && columnDef.isRowNumber === true) {
-        return row + 1;
-        // return "<span class='row-number'>" + (row + 1) + "</span>";
+        return "<span class='row-number'>" + (row + 1) + "</span>";
       }
       if (value == null) {
         return "";
