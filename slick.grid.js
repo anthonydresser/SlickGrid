@@ -3146,6 +3146,7 @@ if (typeof Slick === "undefined") {
     function setFocus() {
       if (activeCell && activeRow) {
         getCellNode(activeRow, activeCell).focus();
+
       }
     }
 
@@ -3178,6 +3179,7 @@ if (typeof Slick === "undefined") {
       if (activeCellNode !== null) {
         makeActiveCellNormal();
         $(activeCellNode).removeClass("active");
+        $(activeCellNode).attr('tabindex', '-1');
         if (rowsCache[activeRow]) {
           $(rowsCache[activeRow].rowNode).removeClass("active");
         }
@@ -3189,6 +3191,8 @@ if (typeof Slick === "undefined") {
       if (activeCellNode != null) {
         activeRow = getRowFromNode(activeCellNode.parentNode);
         activeCell = activePosX = getCellFromNode(activeCellNode);
+
+        $(activeCellNode).attr('tabindex', '0');
 
         if (opt_editMode == null) {
           opt_editMode = (activeRow == getDataLength()) || options.autoEdit;
