@@ -1864,8 +1864,12 @@ if (typeof Slick === "undefined") {
       addlCssClasses += (formatterResult.addClasses ? (addlCssClasses ? ' ' : '') + formatterResult.addClasses : '');
 
       var ariaLabel = '';
-      if (value && value.ariaLabel) {
-        ariaLabel = "aria-label='" + value.ariaLabel + "'";
+      if (value) {
+        if (typeof value === 'string') {
+          ariaLabel = "aria-label='" + value + "'";
+        } else if (value.ariaLabel) {
+          ariaLabel = "aria-label='" + value.ariaLabel + "'";
+        }
       }
       
       stringArray.push("<div tabindex='-1' role='gridcell' " + ariaLabel + " class='" + cellCss + (addlCssClasses ? ' ' + addlCssClasses : '') + "'>");
