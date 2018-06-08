@@ -1865,7 +1865,7 @@ if (typeof Slick === "undefined") {
 
       var ariaLabel = '';
       if (value && value.ariaLabel) {
-        ariaLabel = "aria-Label='" + value.ariaLabel + "'";
+        ariaLabel = "aria-label='" + value.ariaLabel + "'";
       }
       
       stringArray.push("<div tabindex='-1' role='gridcell' " + ariaLabel + " class='" + cellCss + (addlCssClasses ? ' ' + addlCssClasses : '') + "'>");
