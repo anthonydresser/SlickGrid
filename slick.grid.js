@@ -3220,7 +3220,7 @@ if (typeof Slick === "undefined") {
       // this optimisation causes trouble - MLeibman #329
       if (activeCellChanged) {
         // active cell won't exist for when columns are selected
-        if (activeCellNode) {
+        if (activeCellNode && !(isCellPotentiallyEditable(activeRow, activeCell) && options.editable)) {
           activeCellNode.focus();
         }
         if (!suppressActiveCellChangedEvent) { trigger(self.onActiveCellChanged, getActiveCell()); }
