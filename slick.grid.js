@@ -98,9 +98,6 @@ if (typeof Slick === "undefined") {
       forceSyncScrolling: false,
       addNewRowCssClass: "new-row",
       renderRowWithRange: false,
-      showRowNumber: false,
-      rowNumberFontWidth: 8,
-      showDataTypeIcon: false,
       showHeader: true,
       preserveCopiedSelectionOnPaste: false,
       showCellSelection: true,
@@ -119,18 +116,6 @@ if (typeof Slick === "undefined") {
       defaultSortAsc: true,
       focusable: true,
       selectable: true
-    };
-
-    var rowNumberColumnDefaults = {
-      name: "",
-      resizable: false,
-      sortable: false,
-      rerenderOnResize: false,
-      headerCssClass: null,
-      defaultSortAsc: true,
-      focusable: true,
-      selectable: true,
-      isRowNumber: true
     };
 
     // scroller
@@ -254,10 +239,6 @@ if (typeof Slick === "undefined") {
 
       columnsById = {};
       var i = 0;
-      if (options.showRowNumber === true) {
-        insertRowNumberColumn();
-        i++;
-      }
 
       for (; i < columns.length; i++) {
         var m = columns[i] = $.extend({}, columnDefaults, columns[i]);
@@ -766,11 +747,6 @@ if (typeof Slick === "undefined") {
             .data("column", m)
             .addClass(m.headerCssClass || "")
             .appendTo($headers);
-
-        if (options.showDataTypeIcon === true && m.icon !== undefined) {
-          header.prepend("<img class='slick-column-icon' src='" + m.icon + "' />");
-          header.addClass("slick-header-with-icon")
-        }
 
         if (options.enableColumnReorder || m.sortable) {
           header
@@ -1283,9 +1259,6 @@ if (typeof Slick === "undefined") {
 
     function getColumnIndex(id) {
       var index = getColumnIndexInternal(id);
-      if (index != null && options.showRowNumber === true) {
-          index--;
-      }
       return index;
     }
 
@@ -1436,7 +1409,6 @@ if (typeof Slick === "undefined") {
 
     function handleSelectedRangesChanged(e, ranges) {
       var hash = [];
-      var cellOffset = options.showRowNumber === true ? 1 : 0;
       var selectedCellCssClass = options.selectedCellCssClass;
       selectedRows = [];
 
@@ -1454,8 +1426,8 @@ if (typeof Slick === "undefined") {
         hash.push({
           fromRow: range.fromRow,
           toRow: range.toRow,
-          fromCell: range.fromCell + cellOffset,
-          toCell: range.toCell + cellOffset,
+          fromCell: range.fromCell,
+          toCell: range.toCell,
           value: selectedCellCssClass
         });
       }
@@ -1466,9 +1438,8 @@ if (typeof Slick === "undefined") {
     }
 
     function getColumns() {
-      var start = options.showRowNumber === true ? 1 : 0;
       var retval = [];
-      for (var i = start; i < columns.length; i++) {
+      for (var i = 0; i < columns.length; i++) {
         retval.push(columns[i]);
       }
 
@@ -1487,26 +1458,13 @@ if (typeof Slick === "undefined") {
       }
     }
 
-    function insertRowNumberColumn() {
-      var rowNumberColnum = rowNumberColumnDefaults;
-      columns = [rowNumberColnum].concat(columns);
-      resetRowNumberColumnWidth();
-    }
-
-    function resetRowNumberColumnWidth() {
-      var width = (getDataLength().toString().length + 2) * options.rowNumberFontWidth;
-      columns[0].width = width;
-    }
-
     function setColumnWidths(columnDefinitions) {
       var widthChanged = false;
-      var start = options.showRowNumber === true ? 1 : 0;
-      var offset = options.showRowNumber === true ? -1 : 0;
-      for (i = start; i < columns.length; i++) {
+      for (i = 0; i < columns.length; i++) {
         var m = columns[i];
-        if (m.width !== columnDefinitions[i + offset].width) {
+        if (m.width !== columnDefinitions[i].width) {
           widthChanged = true;
-          m.width = columnDefinitions[i + offset].width;
+          m.width = columnDefinitions[i].width;
         } else {
           continue;
         }
@@ -1529,10 +1487,6 @@ if (typeof Slick === "undefined") {
       var previousColumns = columns;
       var i = 0;
       columns = columnDefinitions;
-      if (options.showRowNumber === true) {
-        insertRowNumberColumn();
-        i++;
-      }
 
       var widthChanged =
         (columns === undefined && previousColumns !== undefined) ||
@@ -1733,9 +1687,6 @@ if (typeof Slick === "undefined") {
     }
 
     function defaultFormatter(row, cell, value, columnDef, dataContext, grid) {
-      if (options.showRowNumber === true && columnDef.isRowNumber === true) {
-        return "<span class='row-number'>" + (row + 1) + "</span>";
-      }
       if (value == null) {
         return "";
       } else {
@@ -2109,11 +2060,6 @@ if (typeof Slick === "undefined") {
 
     function updateRowCount() {
       if (!initialized) { return; }
-
-      
-      if (options.showRowNumber === true) {
-        resetRowNumberColumnWidth();
-      }
 
       updateFullRowSelection();
 
@@ -3034,18 +2980,14 @@ if (typeof Slick === "undefined") {
     function handleHeaderContextMenu(e) {
       var $header = $(e.target).closest(".slick-header-column", ".slick-header-columns");
       var column = $header && $header.data("column");
-      if (column.isRowNumber !== true) {
-        trigger(self.onHeaderContextMenu, {column: column}, e);
-      }
+      trigger(self.onHeaderContextMenu, {column: column}, e);
     }
 
     function handleHeaderClick(e) {
       if (columnResizeDragging) return;
       var $header = $(e.target).closest(".slick-header-column", ".slick-header-columns");
       var column = $header && $header.data("column");
-      if (column && column.isRowNumber !== true) {
-        trigger(self.onHeaderClick, {column: column, grid: self}, e);
-      }
+      trigger(self.onHeaderClick, {column: column, grid: self}, e);
     }
 
     function handleMouseEnter(e) {
