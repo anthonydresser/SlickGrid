@@ -1743,9 +1743,9 @@ if (typeof Slick === "undefined") {
       var ariaLabel = '';
       if (value) {
         if (typeof value === 'string') {
-          ariaLabel = "aria-label='" + value + "'";
+          ariaLabel = `aria-label="${value}"`;
         } else if (value.ariaLabel) {
-          ariaLabel = "aria-label='" + value.ariaLabel + "'";
+          ariaLabel = `aria-label="${value.ariaLabel}"`;
         }
       }
       
