@@ -1744,15 +1744,15 @@ if (typeof Slick === "undefined") {
       addlCssClasses += (formatterResult && formatterResult.addClasses ? (addlCssClasses ? ' ' : '') + formatterResult.addClasses : '');
 
       var ariaLabel = '';
-      // if (value) {
-      //   if (typeof value === 'string') {
-      //     ariaLabel = `aria-label="${value}"`;
-      //   } else if (value.ariaLabel) {
-      //     ariaLabel = `aria-label="${value.ariaLabel}"`;
-      //   }
-      // }
+      if (value) {
+        if (typeof value === 'string') {
+          ariaLabel = `aria-label="${value}"`;
+        } else if (value.ariaLabel) {
+          ariaLabel = `aria-label="${value.ariaLabel}"`;
+        }
+      }
       
-      stringArray.push("<div tabindex='-1' role='gridcell' " + `aria-colindex=${cell + 1} aria-labeledby="${uid + m.id}" ` + ariaLabel + " class='" + cellCss + (addlCssClasses ? ' ' + addlCssClasses : '') + "'>");
+      stringArray.push("<div tabindex='-1' role='gridcell' " + `aria-colindex=${cell + 1} ` + (process.platform === 'darwin' ? `aria-labeledby="${uid + m.id}" ` : '') + ariaLabel + " class='" + cellCss + (addlCssClasses ? ' ' + addlCssClasses : '') + "'>");
 
       // if there is a corresponding row (if not, this is the Add New row or this data hasn't been loaded yet)
       if (item) {
