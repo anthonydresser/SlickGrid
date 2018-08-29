@@ -2919,7 +2919,10 @@ if (typeof Slick === "undefined") {
 
     function setFocus() {
       if (activeCell && activeRow) {
-        getCellNode(activeRow, activeCell).focus();
+        var node = getCellNode(activeRow, activeCell);
+        if (node) {
+          node.focus();
+        }
       }
     }
 
