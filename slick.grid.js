@@ -265,6 +265,9 @@ if (typeof Slick === "undefined") {
           .css("outline", 0)
           .addClass(uid)
           .attr('role', 'grid')
+          .attr('aria-rowcount', getDataLength())
+          .attr('aria-colcount', columns.length)
+          .attr('aria-readonly', options.editable ? 'false' : 'true')
           .addClass("ui-widget");
 
       // set up a positioning container if needed
@@ -1677,7 +1680,7 @@ if (typeof Slick === "undefined") {
         rowCss += " " + metadata.cssClasses;
       }
 
-      stringArray.push("<div role='row' class='ui-widget-content " + rowCss + "' style='top:" + getRowTop(row) + "px'>");
+      stringArray.push("<div role='row' " + `aria-rowindex=${row + 1}` + " class='ui-widget-content " + rowCss + "' style='top:" + getRowTop(row) + "px'>");
 
       var colspan, m;
       for (var i = 0, ii = columns.length; i < ii; i++) {
@@ -1749,7 +1752,7 @@ if (typeof Slick === "undefined") {
         }
       }
       
-      stringArray.push("<div tabindex='-1' role='gridcell' " + ariaLabel + " class='" + cellCss + (addlCssClasses ? ' ' + addlCssClasses : '') + "'>");
+      stringArray.push("<div tabindex='-1' role='gridcell' " + `aria-colindex=${cell + 1} ` + (process.platform === 'darwin' ? `aria-labeledby="${uid + m.id}" ` : '') + ariaLabel + " class='" + cellCss + (addlCssClasses ? ' ' + addlCssClasses : '') + "'>");
 
       // if there is a corresponding row (if not, this is the Add New row or this data hasn't been loaded yet)
       if (item) {
