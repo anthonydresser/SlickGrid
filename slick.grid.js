@@ -3820,8 +3820,13 @@ if (typeof Slick === "undefined") {
     function rowsToRanges(rows) {
       var ranges = [];
       var lastCell = columns.length - 1;
-      for (var i = 0; i < rows.length; i++) {
-        ranges.push(new Slick.Range(rows[i], 0, rows[i], lastCell));
+      if (rows.length === renderedRows) {
+        // that means it's select all
+        ranges.push(new Slick.Range(rows[0], 0, rows[rows.length-1], lastCell));
+      } else {
+        for (var i = 0; i < rows.length; i++) {
+          ranges.push(new Slick.Range(rows[i], 0, rows[i], lastCell));
+        }
       }
       return ranges;
     }
