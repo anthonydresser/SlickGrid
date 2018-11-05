@@ -1089,6 +1089,32 @@ if (typeof Slick === "undefined") {
       });
     }
 
+    function setColumnWidths(columnDefinitions) {
+      var widthChanged = false;
+      for (i = 0; i < columnDefinitions.length; i++) {
+        let cd = columnDefinitions[i]
+        var m = columns.find(e => e.id === cd.id);
+        if (m.width !== cd.width) {
+          widthChanged = true;
+          m.width = cd.width;
+        } else {
+          continue;
+        }
+
+        if (m.minWidth && m.width < m.minWidth) {
+          m.width = m.minWidth;
+        }
+        if (m.maxWidth && m.width > m.maxWidth) {
+          m.width = m.maxWidth;
+        }
+      }
+
+      if (widthChanged === true) {
+        applyColumnHeaderWidths();
+        updateCanvasWidth(true);
+      }
+    }
+
     function getVBoxDelta($el) {
       var p = ["borderTopWidth", "borderBottomWidth", "paddingTop", "paddingBottom"];
       var delta = 0;
@@ -3915,6 +3941,7 @@ if (typeof Slick === "undefined") {
       "registerPlugin": registerPlugin,
       "unregisterPlugin": unregisterPlugin,
       "getColumns": getColumns,
+      "setColumnWidths": setColumnWidths,
       "setColumns": setColumns,
       "getColumnIndex": getColumnIndex,
       "updateColumnHeader": updateColumnHeader,
