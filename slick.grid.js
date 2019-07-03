@@ -1512,6 +1512,7 @@ if (typeof Slick === "undefined") {
       validateAndEnforceOptions();
 
       $viewport.css("overflow-y", options.autoHeight ? "hidden" : "auto");
+      $viewport.css("overflow-x", options.forceFitColumns ? "hidden" : "auto");
       if (!suppressRender) { render(); }
     }
 
