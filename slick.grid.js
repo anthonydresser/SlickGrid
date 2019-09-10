@@ -1779,7 +1779,7 @@ if (typeof Slick === "undefined") {
         }
       }
       
-      stringArray.push("<div tabindex='-1' role='gridcell' " + `aria-colindex=${cell + 1} ` + (process.platform === 'darwin' ? `aria-labeledby="${uid + m.id}" ` : '') + ariaLabel + " class='" + cellCss + (addlCssClasses ? ' ' + addlCssClasses : '') + "'>");
+      stringArray.push("<div tabindex='-1' role='gridcell' " + `aria-colindex=${cell + 1} ` + ariaLabel + " class='" + cellCss + (addlCssClasses ? ' ' + addlCssClasses : '') + "'>");
 
       // if there is a corresponding row (if not, this is the Add New row or this data hasn't been loaded yet)
       if (item) {
