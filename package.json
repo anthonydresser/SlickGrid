@@ -29,6 +29,7 @@
   },
   "peerDependencies": {
     "jquery": ">=1.8.0",
-    "jquery-ui": ">=1.8.0"
+    "jquery-ui": ">=1.8.0",
+    "jquery.event.drag": ">=2.3.0"
   }
 }
