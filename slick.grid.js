@@ -2951,6 +2951,12 @@ if (typeof Slick === "undefined") {
         if (node) {
           node.focus();
         }
+      } else {
+        const firstFocusableColumn = columns.findIndex(v => !(v.focusable === false));
+        var node = getCellNode(0, firstFocusableColumn);
+        if (node) {
+          node.focus();
+        }
       }
     }
 
